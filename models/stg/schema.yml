@@ -1,0 +1,21 @@
+version: 2
+
+models:
+  - name: stg_people
+    columns:
+      - name: peopleid
+        tests:
+          - unique
+          - not_null
+
+  - name: stg_logins
+    columns:
+      - name: loginid
+        tests:
+          - unique
+          - not_null
+
+      - name: dayofweek
+        tests:
+          - accepted_values:
+              values: ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"]
