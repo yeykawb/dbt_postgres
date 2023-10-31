@@ -1,0 +1,12 @@
+[sqlfluff]
+templater = dbt
+
+[sqlfluff:templater:dbt]
+project_dir = ~/Development/dbt_postgres
+profiles_dir = ~/.dbt/
+profile = dbt_postgres
+target = dev
+
+[sqlfluff:templater:jinja]
+apply_dbt_builtins = True
+load_macros_from_path = macros

@@ -1,11 +1,3 @@
-
-/*
-    Welcome to your first dbt model!
-    Did you know that you can also configure models directly within SQL files?
-    This will override configurations stated in dbt_project.yml
-
-    Try changing "table" to "view" below
-*/
 {{
   config(
     materialized = 'incremental',
@@ -31,8 +23,8 @@ rename as (
         l.dayofweek,
         l.peopleid,
         p.fullname
-    from logins l
-    left join people p on l.peopleid = p.peopleid
+    from logins as l
+    left join people as p on l.peopleid = p.peopleid
 ),
 
 final as (
@@ -47,17 +39,13 @@ final as (
         }} as _dbt_hash,
         current_timestamp as _dbt_inserted_at,
         current_timestamp as _dbt_updated_at
-        from rename
+    from rename
 )
 
 select * from final
 
 {% if is_incremental() %}
-    
-    where final._dbt_hash not in (select _dbt_hash from {{ this }})
+
+    where _dbt_hash not in (select _dbt_hash from {{ this }})
 
 {% endif %}
-
-
-
-
