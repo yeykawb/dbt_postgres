@@ -11,17 +11,15 @@ with source as (
     Normally we would select from the table here, but we are using seeds to load
     our data in this project
     #}
-    select * from {{ ref('raw_people') }}
+    select * from {{ source('login_service', 'raw_people') }}
 ),
 
-renamed as (
+deleted_customers as (
 
-      select 
-            id as peopleid,
-            concat(firstname, ' ', lastname) as fullname
-
-      from source
+    select
+        id as people_id,
+        deleted_at
+    from source
 )
 
-select * from renamed
-  
+select * from deleted_customers

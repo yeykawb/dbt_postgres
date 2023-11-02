@@ -1,0 +1,15 @@
+version: '3'
+services:
+  postgres-db:
+    image: postgres:latest
+    restart: always
+    container_name: local-postgres
+    env_file:
+      - database.env  # Load environment variables from .env file
+    ports:
+      - "7000:5432"
+    volumes:
+      - agelin_analytics_data:/var/lib/postgresql/data  # Define the volume
+
+volumes:
+  agelin_analytics_data:  # Define the volume name

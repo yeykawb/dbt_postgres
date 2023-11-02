@@ -2,12 +2,12 @@
 # Name your project! Project names should contain only lowercase characters
 # and underscores. A good package name should reflect your organization's
 # name or the intended use of these models
-name: 'dbt_postgres_test'
+name: 'agelin_analytics'
 version: '1.0.0'
 config-version: 2
 
 # This setting configures which "profile" dbt uses for this project.
-profile: 'dbt_postgres'
+profile: 'agelin_analytics'
 
 # These configurations specify where dbt should look for different types of files.
 # The `model-paths` config, for example, states that models in this project can be
@@ -15,7 +15,7 @@ profile: 'dbt_postgres'
 model-paths: ["models"]
 analysis-paths: ["analyses"]
 test-paths: ["tests"]
-seed-paths: ["seeds"]
+seed-paths: ["login_service_data"]
 macro-paths: ["macros"]
 snapshot-paths: ["snapshots"]
 
@@ -31,7 +31,12 @@ clean-targets:         # directories to be removed by `dbt clean`
 # directory as views. These settings can be overridden in the individual model
 # files using the `{{ config(...) }}` macro.
 models:
-  dbt_postgres_test:
-    materialized: table
-    stg:
-      materialized: view
+  agelin_analytics:
+    staging:
+      +materialized: view
+    intermediate:
+      +materialized: ephemeral
+    marts:
+      +materialized: table
+      marketing:
+        +schema: marketing

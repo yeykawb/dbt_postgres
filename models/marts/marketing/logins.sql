@@ -1,7 +1,7 @@
 {{
   config(
     materialized = 'incremental',
-    unique_key = 'loginid',
+    unique_key = 'login_id',
     on_schema_change = 'append_new_columns',
     incremental_strategy = 'merge',
     merge_exclude_columns = ['_dbt_inserted_at']
@@ -9,22 +9,22 @@
 }}
 
 with logins as (
-    select * from {{ ref("stg_logins") }}
+    select * from {{ ref("stg_login_service__logins") }}
 ),
 
 people as (
-    select * from {{ ref("dim_people") }}
+    select * from {{ ref("stg_login_service__people") }}
 ),
 
 rename as (
     select
-        l.loginid,
-        l.logintimestamp,
-        l.dayofweek,
-        l.peopleid,
-        p.fullname
-    from logins as l
-    left join people as p on l.peopleid = p.peopleid
+        logins.login_id,
+        logins.login_timestamp,
+        logins.day_of_week,
+        logins.people_id,
+        people.full_name
+    from logins
+    left join people on logins.people_id = people.people_id
 ),
 
 final as (
@@ -33,7 +33,7 @@ final as (
         {{ 
             dbt_utils.generate_surrogate_key(
                 dbt_utils.get_filtered_columns_in_relation(
-                        from=ref("stg_logins")
+                        from=ref("stg_login_service__logins")
                 )
             )
         }} as _dbt_hash,
